@@ -2,13 +2,16 @@ import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 
 // compontent outside app to prevent re-rendering of whole app
-function CourseComponent({ courses, inText, TextChange, OnSubmitForm }) {
+// variables in square brackets are to be passed in App() render 
+// i.e <courseComponent courses={courses} ... />
+// 
+function CourseComponent({ courses, inText, TextChange, OnSubmitForm, inNumber, NumChange }) {
   return (
     <>
       <h2>Liczba kursow: {courses.length}</h2>
       <ol>
-        {courses.map((cname, idx) => (
-          <li key={idx}>{cname}</li>
+        {courses.map((cname, CourseID) => (
+          <li key={CourseID}>{cname}</li>
         ))}
       </ol>
 
@@ -18,6 +21,7 @@ function CourseComponent({ courses, inText, TextChange, OnSubmitForm }) {
           type="text"
           name="inputText"
           className="form-control"
+          placeholder="Jan Kowalski"
           value={inText} // set value of field from previous state
           onChange={TextChange}
         /><br/>
@@ -30,7 +34,8 @@ function CourseComponent({ courses, inText, TextChange, OnSubmitForm }) {
           max={courses.length}
           min="1"
           placeholder="1"
-          value="1"
+          value={inNumber}
+          onChange={NumChange}
         /><br/>
 
         <button type="submit" className="btn btn-primary">Zapisz do kursu</button>
@@ -42,14 +47,19 @@ function CourseComponent({ courses, inText, TextChange, OnSubmitForm }) {
 function App() {
   const [courses, setCourse] = useState(["Programowanie w C#", "Angular dla poczatkujacych", "Kurs Django"])
   const [inText, setInText] = useState("")
+  const [inNumber, setInNumber] = useState(1)
 
   const OnSubmitForm = (e) => {
     e.preventDefault()
-    console.log(inText)
+    console.log(inText, inNumber)
   }
 
   const TextChange = (e) => {
     setInText(e.target.value)
+  }
+
+  const NumChange = (e) => {
+    setInNumber(e.target.value)
   }
 
   return (
@@ -59,6 +69,7 @@ function App() {
         inText={inText}
         TextChange={TextChange}
         OnSubmitForm={OnSubmitForm}
+        NumChange={NumChange}
       />
     </>
   )
