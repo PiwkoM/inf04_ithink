@@ -22,7 +22,7 @@ function CourseComponent({ courses, inText, TextChange, OnSubmitForm, inNumber, 
           name="inputText"
           className="form-control"
           placeholder="Jan Kowalski"
-          value={inText} // set value of field from previous state
+          // value={inText} // set value of field from previous state
           onChange={TextChange}
         /><br/>
 
@@ -66,7 +66,6 @@ function App() {
     <>
       <CourseComponent
         courses={courses}
-        inText={inText}
         TextChange={TextChange}
         OnSubmitForm={OnSubmitForm}
         NumChange={NumChange}
