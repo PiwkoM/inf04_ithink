@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
+import './App.css'
 
 function App() {
   const [movieGenre, setMovieGenre] = useState([" ","Komedia","Obyczajowy","Sensacyjny","Horror"])
@@ -17,7 +18,6 @@ function App() {
   }
 
   const getGenre = (e) => {
-    console.log(e.target.value)
     setMovieTypeNumber(e.target.value)
   }
 
