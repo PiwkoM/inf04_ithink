@@ -3,12 +3,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 function App() {
 
   useEffect(() => {
-    document.getElementById("picturesOne").style.display = "flex"
-    document.getElementById("picturesTwo").style.display = "flex"
-    document.getElementById("picturesThree").style.display = "flex"
+    document.getElementById("pictures1").style.display = "flex"
+    document.getElementById("pictures2").style.display = "flex"
+    document.getElementById("pictures3").style.display = "flex"
     document.getElementById("check1").checked = true
     document.getElementById("check2").checked = true
     document.getElementById("check3").checked = true
+
   },[])
 
   const [imageTable,setImageTable] = useState([
@@ -26,35 +27,6 @@ function App() {
     {id: 11, alt:"Garbus", filename: "obraz12.jpg", category:3, downloads: 321}
   ])
 
-  const ToggleVis = (e) => {
-    console.log(e.target.id)
-    switch(e.target.id){
-      case "check1":
-        console.log(e.target.checked)
-        document.getElementById("picturesOne").style.display = "flex"
-        if(e.target.checked == false){
-          document.getElementById("picturesOne").style.display = "none"
-        }
-        break;
-      case "check2":
-        console.log(e.target.checked)
-        document.getElementById("picturesTwo").style.display = "flex"
-        if(e.target.checked == false){
-          document.getElementById("picturesTwo").style.display = "none"
-        }
-        break;
-      case "check3":
-        console.log(e.target.checked)
-        document.getElementById("picturesThree").style.display = "flex"
-        if(e.target.checked == false){
-          document.getElementById("picturesThree").style.display = "none"
-        }
-        break;
-    }
-    //i dont know how comments work inside the return statement so ill just do this here
-    //for some reason ./assets/filename wouldnt work, so the images are in public instead of src, where they originally were
-  }
-
   const addCount = (id) => {
     //map thru table, check if clicked img id is the same as one in table, set count to +1 
     // via table mapping, else do nothing with the img 
@@ -66,25 +38,33 @@ function App() {
     //and passing it thru an arrow function fixes it...? 
   }
 
+  //js gracing my ass with .replace hallelujah
+  const ToggleVisPrototype = (e) => {
+    const _dynID = document.getElementById((e.target.id).replace("check","pictures"))
+    _dynID.style.display = e.target.checked ? "flex" : "none"
+  }
+
+
+
   return (
     <>
       <h2>Kategorie zdjęć</h2>
       <div style={{display: 'flex', flexDirection:'row', gap:'10px'}}>
         <div className="form-check form-switch">
-          <input className="form-check-input" type="checkbox" id="check1" onChange={ToggleVis}/>
+          <input className="form-check-input" type="checkbox" id="check1" onChange={ToggleVisPrototype}/>
           <label htmlFor="check1">Kwiaty</label>
         </div>  
         <div className="form-check form-switch">
-          <input className="form-check-input" type="checkbox" id="check2" onChange={ToggleVis}/>
+          <input className="form-check-input" type="checkbox" id="check2" onChange={ToggleVisPrototype}/>
           <label htmlFor="check2">Zwierzęta</label>
         </div>
         <div className="form-check form-switch">  
-          <input className="form-check-input" type="checkbox" id="check3" onChange={ToggleVis}/>
+          <input className="form-check-input" type="checkbox" id="check3" onChange={ToggleVisPrototype}/>
           <label htmlFor="check3">Samochody</label>
         </div>
       </div>
 
-      <div style={{gap:'10px'}}  id="picturesOne">
+      <div style={{gap:'10px'}}  id="pictures1">
         {imageTable.filter(_img => _img.category == 1).map(n =>(
           <>
           <div>
@@ -96,7 +76,7 @@ function App() {
           </>
         ))}
       </div>
-      <div style={{gap:'10px'}} id="picturesTwo">
+      <div style={{gap:'10px'}} id="pictures2">
       {imageTable.filter(_img => _img.category == 2).map(n =>(
           <>
           <div>
@@ -108,7 +88,7 @@ function App() {
           </>
         ))}
       </div>
-      <div style={{gap:'10px'}}   id="picturesThree">
+      <div style={{gap:'10px'}}   id="pictures3">
       {imageTable.filter(_img => _img.category == 3).map(n =>(
           <>
           <div>
