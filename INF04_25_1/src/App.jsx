@@ -9,7 +9,6 @@ function App() {
     document.getElementById("check1").checked = true
     document.getElementById("check2").checked = true
     document.getElementById("check3").checked = true
-
   },[])
 
   const [imageTable,setImageTable] = useState([
@@ -44,8 +43,6 @@ function App() {
     _dynID.style.display = e.target.checked ? "flex" : "none"
   }
 
-
-
   return (
     <>
       <h2>Kategorie zdjęć</h2>
@@ -76,7 +73,7 @@ function App() {
           </>
         ))}
       </div>
-      <div style={{gap:'10px'}} id="pictures2">
+      <div style={{gap:'10px', flexWrap: 'wrap'}} id="pictures2">
       {imageTable.filter(_img => _img.category == 2).map(n =>(
           <>
           <div>
