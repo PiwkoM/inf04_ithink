@@ -3,8 +3,24 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
   const [minutes,setMinutes] = useState(0)
-  const [history,setHistory] = useState([])
+  const [history,setHistory] = useState([
+    {_minutes: 60, blocks: 2, totalFee: 2},
+    {_minutes: 60, blocks: 2, totalFee: 2},
+    {_minutes: 60, blocks: 2, totalFee: 2}
+  ])
 
+  // const blocks = Math.ceil(minutes/30)
+  // const NewRecord = {
+  //   // id: 1
+  //   _minutes: minutes,
+  //   blocks: blocks,
+  //   totalFee: blocks+2,
+  //   timestamp: 1
+  //   // timestamp: Date.now().toLocaleString()
+  // }
+  // setHistory(prev => [...prev,NewRecord])
+
+  var blocks = Math.ceil(minutes/30)
   return (
       <div className="container mt-4">
         <h3 className="mb-4">Kalkulator oplat parkingowych</h3>
@@ -17,7 +33,8 @@ function App() {
             <form>
               <div className="form-group mb-3">
                 <label className="form-label" for="inNumber">Wprowadz minuty</label>
-                <input name="inNumber" type="number" className="form-control"/>
+                <input name="inNumber" onChange={(event) => setMinutes(event.target.value)} 
+                type="number" className="form-control"/>
                 <p/>
                 <div className="d-flex gap-2">
                   <button className="btn btn-primary"
@@ -66,7 +83,7 @@ function App() {
         <div className="card mb-4">
           <div className="card-header d-flex justify-content-between">
             <h3 className="card-title mb-0">Historia obliczen</h3><button 
-            onClick={() => setHistory()}className="btn btn-warning">Wyczysc historie</button>
+            onClick={() => setHistory([])}className="btn btn-warning">Wyczysc historie</button>
           </div>
 
           <div className="card-body">
@@ -82,15 +99,15 @@ function App() {
                 </trow>
               </thead>
               <tbody>
-               {/*throw ts into a .map
+                {history.map((item,index) => (
                 <tr>
                   <th scope="row">{index+1}</th>
-                  <td>{item.minutes}</td>
+                  <td>{item._minutes}</td>
                   <td>{item.blocks}</td>
-                  <td>{item.totalFee.toFixed(2)} PLN</td>
-                  <td>{item.timestamp}</td>
+                  <td>{item.totalFee} PLN</td>
+                  {/* <td>{item.timestamp}</td> */}
                 </tr>
-              */}
+              ))}
               </tbody>
             </table>
             </div>
