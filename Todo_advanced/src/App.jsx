@@ -2,10 +2,32 @@ import { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
-  const [todoList, setList] = useState([{id: 1, task:"yo mama",severity: 1}])
+  const [todoList, setList] = useState([{id: 1, task:"yo mama",severity: 'low'}])
+  const [taskValue, setValue] = useState('')
+  const [severity,setSeverity] = useState('')
+  // const [severityFilter,setFilter] = useState({
+  //   low: false,
+  //   medium: false,
+  //   high: false
+  // })
+  const getValue = (e) => {
+    setValue(e.target.value)
+  }
 
-  const HandleClick = (e) => {
+  const HandleSubmit = (e) => {
     e.preventDefault()
+    const newTask = {
+      id: todoList.length ? todoList[todoList.length - 1].id + 1 : 1,
+      task: taskValue,
+      severity: severity
+    }
+    setList(prev => [...prev,newTask])
+    console.log(todoList)
+  }
+
+  const HandleSeverityChange = (e) => {
+    setSeverity(e.target.value)
+    console.log(e.target.value)
   }
 
   return (
@@ -17,22 +39,24 @@ function App() {
           <div className="card">
             <h5 className="card-header">Dodaj nowe zadanie</h5>
             <div className="card-body m-2">
-
+              <form onSubmit={HandleSubmit}>
               <label className="form-input-label" for="task">Zadanie:</label>
-              <input type="text" className="form-control mb-2" id="task" placeholder="Wprowadź treść zadania..."/>
+              <input type="text" className="form-control mb-2" id="task" placeholder="Wprowadź treść zadania..."
+              onChange={getValue}/>
 
               <label className="form-input-label" for="radios">Priorytet:</label>
               <div className="form-check" id="radios">
-              <input type="radio" className="form-check-input" name="taskSeverity" value="1"/> Niski
+              <input type="radio" className="form-check-input" name="taskSeverity" value="low" onChange={HandleSeverityChange}/> Niski
               </div>
               <div className="form-check">
-              <input type="radio" className="form-check-input" name="taskSeverity" value="2"/> Średni
+              <input type="radio" className="form-check-input" name="taskSeverity" value="medium" onChange={HandleSeverityChange}/> Średni
               </div>
               <div className="form-check">
-              <input type="radio" className="form-check-input" name="taskSeverity" value="3"/> Wysoki
+              <input type="radio" className="form-check-input" name="taskSeverity" value="high" onChange={HandleSeverityChange}/> Wysoki
               </div>
 
-              <button type="button" className="btn btn-primary">Dodaj zadanie</button>
+              <button type="submit" className="btn btn-primary">Dodaj zadanie</button>
+              </form>
             </div>
           </div>
           <br/>
@@ -62,14 +86,28 @@ function App() {
           <div className="card">
             <h5 className="card-header">Lista zadań (posortowana)</h5>
             <div className="card-body">
-
+              {todoList.map(_task => (
+                <p>{_task.task}</p>
+              ))}
             </div>
           </div>
 
           <div className="card mt-3">
             <h5 className="card-header">Statystyki</h5>
-            <div className="card-body">
-
+            <div className="card-body row">
+            <div className="col-md-4 text-center">
+            <h5 className="text-muted">Minuty</h5>
+            <h4 className="text-danger">{todoList.filter(task => task.severity=='high').length}</h4>
+          </div>
+          <div className="col-md-4 text-center">
+            <h5 className="text-muted">Bloki</h5>
+            <h4 className="text-info"></h4>
+          </div>
+          <div className="col-md-4 text-center">
+            <h5 className="text-muted">Niski</h5>
+            <h4 className="text-success"></h4>
+          </div>
+          <hr/>
             </div>
           </div>
         </div>
