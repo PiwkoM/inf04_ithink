@@ -95,22 +95,24 @@ function App() {
           <div className="card mt-3">
             <h5 className="card-header">Statystyki</h5>
             <div className="card-body row">
-            <div className="col-md-4 text-center">
-            <h5 className="text-muted">Minuty</h5>
-            <h4 className="text-danger">{todoList.filter(task => task.severity=='high').length}</h4>
-          </div>
-          <div className="col-md-4 text-center">
-            <h5 className="text-muted">Bloki</h5>
-            <h4 className="text-info"></h4>
-          </div>
-          <div className="col-md-4 text-center">
-            <h5 className="text-muted">Niski</h5>
-            <h4 className="text-success"></h4>
-          </div>
-          <hr/>
+              <div className="col-md-4 text-center">
+                <h4 className="text-danger">{todoList.filter(task => task.severity=='high').length}</h4>
+                <p className="text-muted">Wysoki</p>
+              </div>
+              <div className="col-md-4 text-center">
+                <p className="text-warning">-</p>
+                <p className="text-muted">Średni</p>
+              </div>
+              <div className="col-md-4 text-center">
+                <h4 className="text-success">-</h4>
+                <p className="text-muted">Niski</p>
+              </div>
+              {/* info, primary */}
+              <hr/>
+
+              </div>
             </div>
           </div>
-        </div>
 
         <div>
           <div className="card mt-5">
