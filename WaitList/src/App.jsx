@@ -71,7 +71,7 @@ function App() {
         <option value="">-- Wybierz kurs --</option>
         {Courses.map((n) => (
           <option key={n.id} value={n.name}>
-            {n.name}
+            {n.name} (Pozostało: {n.capacity - n.enrolled})
           </option>
         ))}
       </select>
