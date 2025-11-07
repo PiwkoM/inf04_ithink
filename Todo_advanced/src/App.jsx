@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
   const [todoList, setList] = useState([{id: 1, task:"yo mama",severity: 'low'}])
+  const [recentHistory, setRecent] = useState([])
   const [taskValue, setValue] = useState('')
   const [severity,setSeverity] = useState('')
   // const [severityFilter,setFilter] = useState({
@@ -10,6 +11,16 @@ function App() {
   //   medium: false,
   //   high: false
   // })
+  const Filters = {
+    low: true,
+    medium: false,
+    high: false
+  }
+
+  // const ActiveFilters = Object.entries(Filter).filter(
+  //   ([key,value]) => value
+  // ).map(([key]) => key)
+
   const getValue = (e) => {
     setValue(e.target.value)
   }
@@ -22,6 +33,7 @@ function App() {
       severity: severity
     }
     setList(prev => [...prev,newTask])
+    setRecent(prev =>[...prev,newTask])
     console.log(todoList)
   }
 
@@ -64,17 +76,17 @@ function App() {
             <h5 className="card-header">Filtry priorytetów</h5>
             <div className="card-body m-2">
               <div className="form-check">
-                <input type="checkbox" className="form-check-input" id="check1"/>
+                <input type="checkbox" className="form-check-input" id="check1" checked={Filters.low}/>
                 <label className="form-check-label">Pokaż zadania o niskim priorytecie</label>
               </div>
 
               <div className="form-check">
-                <input type="checkbox" className="form-check-input" id="check2"/>
+                <input type="checkbox" className="form-check-input" id="check2" checked={Filters.medium}/>
                 <label className="form-check-label">Pokaż zadania o średnim priorytecie</label>
               </div>
 
               <div className="form-check">
-                <input type="checkbox" className="form-check-input" id="check3"/>
+                <input type="checkbox" className="form-check-input" id="check3" checked={Filters.high}/>
                 <label className="form-check-label">Pokaż zadania o wysokim priorytecie</label>
               </div>
             </div>
@@ -87,7 +99,7 @@ function App() {
             <h5 className="card-header">Lista zadań (posortowana)</h5>
             <div className="card-body">
               {todoList.map(_task => (
-                <p>{_task.task}</p>
+                <p>{_task.task} - {_task.severity}</p>
               ))}
             </div>
           </div>
@@ -100,15 +112,23 @@ function App() {
                 <p className="text-muted">Wysoki</p>
               </div>
               <div className="col-md-4 text-center">
-                <p className="text-warning">-</p>
+                <h4 className="text-warning">{todoList.filter(task => task.severity=='medium').length}</h4>
                 <p className="text-muted">Średni</p>
               </div>
               <div className="col-md-4 text-center">
-                <h4 className="text-success">-</h4>
+                <h4 className="text-success">{todoList.filter(task => task.severity=='low').length}</h4>
                 <p className="text-muted">Niski</p>
               </div>
-              {/* info, primary */}
               <hr/>
+              <div className="col-md-4 text-center">
+                <h4 className="text-info">{todoList.filter(task => task.severity=='low').length}</h4>
+                <p className="text-muted">Wszystkie zadania</p>
+              </div>
+              <div className="col-md-4 text-center">
+                <h4 className="text-primary">{recentHistory.length}</h4>
+                <p className="text-muted">Dodane</p>
+              </div>
+              {/* info, primary */}
 
               </div>
             </div>
