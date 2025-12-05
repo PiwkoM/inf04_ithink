@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { useState , useEffect} from 'react'
 
 function App() {
-  const [curRate, setCurRate] = useState()
+  const [curRate, setCurRate] = useState(0)
   const [tempRate, setTempRate] = useState()
   const [rateHistory, setHistory] = useState([])
 
@@ -16,10 +16,51 @@ function App() {
     }    
   },[])
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
-  },[])
+  // },[])
 
+  const handleHover = (i) => {
+    setTempRate(i)
+  }
+
+  const getStar = (i) =>{
+    return i <= tempRate ? '★' : '☆'
+  }
+  
+  // switch(){
+  //   case 1:
+
+  //   case 2:
+
+  //   case 3:
+
+  //   case 4:
+
+  //   case 5:
+
+  // }
+  //  (this.id <= tempRate : Color ? dontColor) 
+  // '★''☆'
+  const rateName = () =>{
+    switch(curRate){
+      case 1:
+        return "Bardzo słaba"
+      case 2:
+        return "Słaba"
+      case 3: 
+        return "Przeciętna"
+      case 4:
+        return "Dobra"
+      case 5:
+        return "Bardzo dobra"
+    }
+  }
+
+  const clearRate = () =>{
+    setCurRate(0)
+    setTempRate(0)
+  }
   return (
 
     <div className="container mt-4">
@@ -48,14 +89,33 @@ function App() {
     
 		        <div className="card-body text-center">
               <div className="star-rating-widget mb-3">
-                {[1,2,3,4,5].map(()=>{ return(
-                  <button type="button" className="btn btn-link">test</button>
+                {[1,2,3,4,5].map((index)=>{ return(
+                  <button 
+                  style={{ fontSize: '2rem', border: 'none', background: 'none' }}
+                  type="button" role="radio"
+                  className={`btn btn-link ${( index <= tempRate ? 'text-warning' : 'text-muted')}`}
+                  onMouseEnter={() => handleHover(index)}
+                  onClick={() => setCurRate(index)}>
+                    <span className="star-icon">{getStar(index)}</span>
+                  </button>
                 )})}
               </div>
                 <span className="badge bg-primary mb-2"><h4><strong>Ocena:</strong></h4></span>
-                <p className="text-muted">brak oceny</p>
-                <button type="button" className="btn btn-warning mb-2">Wyczyść ocenę</button>
+                <p className="text-muted">
+                {(curRate!=0 ? rateName() : "Brak oceny")}
+                </p>
+                <button type="button" className="btn btn-warning mb-2" onClick={clearRate}>Wyczyść ocenę</button>
                 <p className="text-info">podglad: </p>
+		        </div>
+          </div>
+
+          <div className="card mb-4">
+	          <div className="card-header">
+	            <h5 className="card-title mb-8">Historia</h5>
+	          </div>
+    
+		        <div className="card-body">
+    
 		        </div>
           </div>
 
@@ -63,9 +123,11 @@ function App() {
 	          <div className="card-header">
 	            <h5 className="card-title mb-8">Statystyki ocen</h5>
 	          </div>
-    
 		        <div className="card-body">
-    
+                <p>t</p>
+                <p>t</p>
+                <p>t</p>
+                <p>t</p>
 		        </div>
           </div>
 {/*
