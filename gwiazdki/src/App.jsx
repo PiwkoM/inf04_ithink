@@ -1,49 +1,56 @@
-import 'bootstrap/dist/css/bootstrap.css'
 import { useState , useEffect} from 'react'
+import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
-  const [curRate, setCurRate] = useState(0)
-  const [tempRate, setTempRate] = useState()
-  const [rateHistory, setHistory] = useState([])
+  const [curRate, setCurRate] = useState(() => {
+    try {
+      const current = localStorage.getItem("lastRate")
+      console.log("Loaded lastRate from localStorage:", current)
+      return current ? JSON.parse(current) : 0
+    } catch (e) {
+      console.error("Failed to parse lastRate:", e)
+      return 0
+    }
+  })
+  const [rateHistory, setHistory] = useState(() => {
+    try {
+      const hist = localStorage.getItem("History")
+      console.log("Loaded History from localStorage:", hist)
+      return hist ? JSON.parse(hist) : []
+    } catch (e) {
+      console.error("Failed to parse History:", e)
+      return []
+    }
+  })
+  const [tempRate, setTempRate] = useState(0)
+
+
 
   useEffect(() => {
-    const rateHistory = localStorage.getItem('History')
-    const ratePrev = localStorage.getItem('lastRate')
+    localStorage.setItem("lastRate",JSON.stringify(curRate))
+  },[curRate])
 
-    if(ratePrev) setCurRate(praseInt(ratePrev) || 0) 
-    if(rateHistory){
-      setHistory(JSON.parse(rateHistory))
-    }    
-  },[])
-
-  // useEffect(()=>{
-
-  // },[])
+  useEffect(() => {
+    localStorage.setItem("History",JSON.stringify(rateHistory))
+  },[rateHistory])
 
   const handleHover = (i) => {
     setTempRate(i)
   }
 
   const getStar = (i) =>{
-    return i <= tempRate ? '★' : '☆'
+    if(curRate && tempRate !=0){
+      return i <= tempRate ? '★' : '☆'
+    } else if(curRate && i<=curRate){
+      return '★'
+    } else {
+      return '☆'
+    }
+
   }
   
-  // switch(){
-  //   case 1:
-
-  //   case 2:
-
-  //   case 3:
-
-  //   case 4:
-
-  //   case 5:
-
-  // }
-  //  (this.id <= tempRate : Color ? dontColor) 
-  // '★''☆'
-  const rateName = () =>{
-    switch(curRate){
+  const rateName = (intake) =>{
+    switch(intake){
       case 1:
         return "Bardzo słaba"
       case 2:
@@ -61,6 +68,15 @@ function App() {
     setCurRate(0)
     setTempRate(0)
   }
+
+  const clearHistory = () =>{
+    setHistory([])
+  }
+
+  const handleHistory = (index) => {
+    setHistory(prev => [...prev,index])
+  }
+
   return (
 
     <div className="container mt-4">
@@ -93,31 +109,40 @@ function App() {
                   <button 
                   style={{ fontSize: '2rem', border: 'none', background: 'none' }}
                   type="button" role="radio"
-                  className={`btn btn-link ${( index <= tempRate ? 'text-warning' : 'text-muted')}`}
+                  className={`btn btn-link ${( (index <= tempRate || index <=curRate) ? 'text-warning' : 'text-muted')}`}
                   onMouseEnter={() => handleHover(index)}
-                  onClick={() => setCurRate(index)}>
+                  onMouseLeave={() => { document.getElementById("tet").style.display = "none"; setTempRate(0); }}
+                  onClick={() => {setCurRate(index); handleHistory(index);}}>
                     <span className="star-icon">{getStar(index)}</span>
                   </button>
                 )})}
               </div>
-                <span className="badge bg-primary mb-2"><h4><strong>Ocena:</strong></h4></span>
+                <span className="badge bg-primary mb-2"><h4><strong>Ocena: {curRate}</strong></h4></span>
                 <p className="text-muted">
-                {(curRate!=0 ? rateName() : "Brak oceny")}
+                {(curRate!=0 ? rateName(curRate) : "Brak oceny")}
                 </p>
                 <button type="button" className="btn btn-warning mb-2" onClick={clearRate}>Wyczyść ocenę</button>
-                <p className="text-info">podglad: </p>
+                <p className="text-info" id="tet" style={{display: 'none'}}>Podgląd: {rateName(tempRate)}</p>
 		        </div>
           </div>
-
+          {rateHistory.length > 0 && (
           <div className="card mb-4">
-	          <div className="card-header">
-	            <h5 className="card-title mb-8">Historia</h5>
-	          </div>
+            <div className="card-header d-flex justify-content-between align-items-center">
+                <h5 className="card-title mb-0">Historia ocen</h5>
+                <button
+                  className="btn btn-sm btn-warning"
+                  onClick={clearHistory}
+                >
+                  Wyczyść historię
+                </button>
+              </div>
     
 		        <div className="card-body">
     
 		        </div>
           </div>
+          )}
+
 
           <div className="card mb-4">
 	          <div className="card-header">
